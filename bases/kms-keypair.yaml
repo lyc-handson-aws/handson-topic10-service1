@@ -1,0 +1,29 @@
+apiVersion: kms.aws.crossplane.io/v1alpha1
+kind: Key
+metadata:
+  name: dev-key
+spec:
+  forProvider:
+    region: eu-west-3
+    description: dev-key
+    pendingWindowInDays: 7
+    policy: |-
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "Enable IAM User Permissions",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::654654303557:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      }
+    tags:
+     - tagKey: asdas
+       tagValue: k1
+  providerConfigRef:
+    name: default

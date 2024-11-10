@@ -1,0 +1,23 @@
+apiVersion: dynamodb.aws.crossplane.io/v1alpha1
+kind: Table
+metadata:
+  name: my-dynamodb-table
+spec:
+  forProvider:
+    region: eu-west-3
+    attributeDefinitions:
+      - attributeName: id
+        attributeType: S
+      - attributeName: message
+        attributeType: S
+    billingMode: PROVISIONED
+    keySchema:
+      - attributeName: id
+        keyType: HASH
+      - keyType: "RANGE"
+        attributeName: "message"
+    provisionedThroughput:
+      readCapacityUnits: 5
+      writeCapacityUnits: 5
+  providerConfigRef:
+    name: default

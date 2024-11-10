@@ -1,0 +1,10 @@
+apiVersion: service.lyc-handson-aws.com/v1alpha1
+kind: ServiceTwoClaim
+metadata:
+  name: service2-topic10-xr
+  labels:
+    tech: crossplane-xr
+spec: 
+  location: "Paris"
+  image: nginx
+  replicas: 3

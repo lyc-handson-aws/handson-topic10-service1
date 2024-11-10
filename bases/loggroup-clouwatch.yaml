@@ -1,0 +1,14 @@
+apiVersion: cloudwatchlogs.aws.crossplane.io/v1alpha1
+kind: LogGroup
+metadata:
+  name: example-log-group
+spec:
+  forProvider:
+    logGroupName: example-log-group
+    region: eu-west-3
+    retentionInDays: 1
+    tags:
+      environment: production
+      project: myapp
+  providerConfigRef:
+    name: default

@@ -1,0 +1,127 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: service1-topic10-composition
+  labels:
+    tech: crossplane-composition
+spec:
+  compositeTypeRef:
+    apiVersion: service.lyc-handson-aws.com/v1alpha1
+    kind: ServiceOne
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        patchSets:
+        - name: location-patchset
+          patches:
+            - type: FromCompositeFieldPath
+              fromFieldPath: "spec.location"
+              toFieldPath: "spec.forProvider.region"
+              transforms:
+                - type: map
+                  map: 
+                    Paris: "eu-west-3"
+                    Virginia: "us-east-1"
+        resources:
+        - name: dynamodb
+          base:
+            apiVersion: dynamodb.aws.crossplane.io/v1alpha1
+            kind: Table
+            metadata:
+              name:  service1-topic10-dynamotable
+            spec:
+              forProvider:
+                region: "us-east-2"
+                attributeDefinitions:
+                  - attributeName: id
+                    attributeType: S
+                  - attributeName: message
+                    attributeType: S
+                billingMode: PROVISIONED
+                keySchema:
+                  - attributeName: id
+                    keyType: HASH
+                  - keyType: "RANGE"
+                    attributeName: "message"
+                provisionedThroughput:
+                  readCapacityUnits: 5
+                  writeCapacityUnits: 5
+              providerConfigRef:
+                name: default
+          patches:
+            - type: PatchSet
+              patchSetName: location-patchset
+            - type: ToCompositeFieldPath
+              fromFieldPath: 'status.atProvider.tableARN'
+              toFieldPath: status.dynamodbArn
+        - name: cloudwatch
+          base:
+            apiVersion: cloudwatchlogs.aws.crossplane.io/v1alpha1
+            kind: LogGroup
+            metadata:
+              name: service1-topic10-loggroup
+            spec:
+              forProvider:
+                region: "us-east-2"
+                logGroupName: service1-topic10-loggroup
+                retentionInDays: 1
+              providerConfigRef:
+                name: default
+          patches:
+            - type: PatchSet
+              patchSetName: location-patchset
+            - type: ToCompositeFieldPath
+              fromFieldPath: status.atProvider.arn
+              toFieldPath: status.cloudwatchArn
+        - name: kms
+          base:
+            apiVersion: kms.aws.crossplane.io/v1alpha1
+            kind: Key
+            metadata:
+              name: service1-topic10-loggroup
+            spec:
+              forProvider:
+                region: "us-east-2"
+                description: "KMS key for my composite resource"
+                enableKeyRotation: true
+              providerConfigRef:
+                name: default
+          patches:
+            - type: PatchSet
+              patchSetName: location-patchset
+            - type: ToCompositeFieldPath
+              fromFieldPath: status.atProvider.arn
+              toFieldPath: status.kmsArn
+        #- name: topicten
+        #  base:
+        #    apiVersion: app.lyc-handson-aws.com/v1alpha1
+        #    kind: TopicTen
+        #    metadata:
+        #      name: service1-topic10-topicten
+        #    spec: 
+        #      cloudwatcharn: xx
+        #      image: nginx
+        #      kmsarn: xx
+        #      replicas: 2
+        #      targetarn: xx
+        #  patches:
+        #    - type: FromCompositeFieldPath
+        #      fromFieldPath: "status.dynamodbArn"
+        #      toFieldPath: "spec.targetarn"
+        #    - type: FromCompositeFieldPath
+        #      fromFieldPath: "status.cloudwatchArn"
+        #      toFieldPath: "spec.cloudwatcharn"
+        #    - type: FromCompositeFieldPath
+        #      fromFieldPath: "status.kmsArn"
+        #      toFieldPath: "spec.kmsarn"
+        #    - type: FromCompositeFieldPath
+        #      fromFieldPath: "spec.image"
+        #      toFieldPath: "spec.image"
+        #    - type: FromCompositeFieldPath
+        #      fromFieldPath: "spec.replicas"
+        #      toFieldPath: "spec.replicas"

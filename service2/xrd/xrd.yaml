@@ -1,0 +1,50 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: servicetwos.service.lyc-handson-aws.com
+  labels:
+    tech: crossplane-xrd
+spec:
+  group: service.lyc-handson-aws.com
+  names:
+    kind: ServiceTwo
+    plural: servicetwos
+  claimNames:
+    kind: ServiceTwoClaim
+    plural: servicetwoclaims
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              image:
+                type: string
+              replicas:
+                format: int32
+                maximum: 5
+                minimum: 2
+                type: integer
+              location:
+                type: string
+            required:
+            - image
+            - replicas
+            - location
+          status:
+            type: object
+            properties:
+              s3Arn:
+                type: string
+                description: "ARN of the S3 bucket"
+              cloudwatchArn:
+                type: string
+                description: "ARN of the CloudWatch Log Group"
+              kmsArn:
+                type: string
+                description: "ARN of the KMS Key"
