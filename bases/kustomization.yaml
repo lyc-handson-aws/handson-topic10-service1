@@ -1,6 +1,0 @@
-commonLabels:
-  yuanchao-handson: topic10
-commonAnnotations:
-  methode: kustomize
-resources:
-  - topicten-base

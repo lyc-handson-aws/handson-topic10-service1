@@ -1,11 +1,11 @@
 apiVersion: kms.aws.crossplane.io/v1alpha1
 kind: Key
 metadata:
-  name: dev-key
+  name: topic10-kmskey 
 spec:
   forProvider:
     region: eu-west-3
-    description: dev-key
+    description: topic10-kmskey 
     pendingWindowInDays: 7
     policy: |-
       {
@@ -15,7 +15,7 @@ spec:
             "Sid": "Enable IAM User Permissions",
             "Effect": "Allow",
             "Principal": {
-              "AWS": "arn:aws:iam::654654303557:root"
+              "AWS": "arn:aws:iam::654654303557:user/handson-topic10-produit-user"
             },
             "Action": "kms:*",
             "Resource": "*"

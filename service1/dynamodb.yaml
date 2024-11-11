@@ -1,10 +1,10 @@
 apiVersion: dynamodb.aws.crossplane.io/v1alpha1
 kind: Table
 metadata:
-  name: my-dynamodb-table
+  name:  topic10-dynamotable
 spec:
   forProvider:
-    region: eu-west-3
+    region: "eu-wast-3"
     attributeDefinitions:
       - attributeName: id
         attributeType: S

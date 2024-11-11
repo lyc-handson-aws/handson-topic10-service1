@@ -3,6 +3,9 @@ commonLabels:
   yuanchao-handson: topic10
 commonAnnotations:
   methode: kustomize
+nameSuffix: -service1
+namePrefix: app1-
 resources:
-  - ../xrd
-  - composition.yaml
+  - dynamodb.yaml
+  - kms-keypair.yaml
+  - loggroup-clouwatch.yaml

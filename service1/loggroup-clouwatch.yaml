@@ -1,10 +1,10 @@
 apiVersion: cloudwatchlogs.aws.crossplane.io/v1alpha1
 kind: LogGroup
 metadata:
-  name: example-log-group
+  name: topic10-loggroup
 spec:
   forProvider:
-    logGroupName: example-log-group
+    logGroupName: topic10-loggroup
     region: eu-west-3
     retentionInDays: 1
     tags:

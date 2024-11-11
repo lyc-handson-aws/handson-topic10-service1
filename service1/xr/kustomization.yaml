@@ -1,8 +1,0 @@
-commonLabels:
-  env: service1
-  yuanchao-handson: topic10
-commonAnnotations:
-  methode: kustomize
-resources:
-  - ../composition
-  - xr.yaml
