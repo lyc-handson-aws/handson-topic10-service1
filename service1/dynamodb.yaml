@@ -4,7 +4,7 @@ metadata:
   name:  topic10-dynamotable
 spec:
   forProvider:
-    region: "eu-wast-3"
+    region: "eu-west-3"
     attributeDefinitions:
       - attributeName: id
         attributeType: S

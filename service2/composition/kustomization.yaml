@@ -3,6 +3,7 @@ commonLabels:
   yuanchao-handson: topic10
 commonAnnotations:
   methode: kustomize
+  argocd.argoproj.io/sync-wave: "0"
 resources:
   - ../xrd
   - composition.yaml

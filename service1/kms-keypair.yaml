@@ -15,7 +15,10 @@ spec:
             "Sid": "Enable IAM User Permissions",
             "Effect": "Allow",
             "Principal": {
-              "AWS": "arn:aws:iam::654654303557:user/handson-topic10-produit-user"
+              "AWS": [
+               "arn:aws:iam::654654303557:user/handson-topic10-produit-user",
+               "arn:aws:iam::654654303557:root"
+              ]
             },
             "Action": "kms:*",
             "Resource": "*"
